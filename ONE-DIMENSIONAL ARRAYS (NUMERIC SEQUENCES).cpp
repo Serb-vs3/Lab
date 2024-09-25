@@ -1,4 +1,5 @@
 #include <iostream>
+
 int main() {
     int n;
     std::cin >> n;
@@ -40,21 +41,14 @@ int main() {
     int X;
     std::cout << "x: ";
     std::cin >> X;
-    int* arr1 = new int[n];
-    int* arr2 = new int[n];
-    int size1 = 0, size2 = 0;
+    int j = 0;
     for (int i = 0; i < n; ++i) {
         if (abs(arr[i]) <= X) {
-            arr1[size1++] = arr[i];
-        } else {
-            arr2[size2++] = arr[i];
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            j++;
         }
-    }
-    for (int i = 0; i < size1; ++i) {
-        arr[i] = arr1[i];
-    }
-    for (int i = 0; i < size2; ++i) {
-        arr[size1 + i] = arr2[i];
     }
     std::cout << "New:";
     for (int i = 0; i < n; ++i) {
@@ -62,7 +56,5 @@ int main() {
     }
     std::cout << std::endl;
     delete[] arr;
-    delete[] arr1;
-    delete[] arr2;
     return 0;
 }
