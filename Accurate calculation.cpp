@@ -1,27 +1,41 @@
 #include <iostream>
 #include <cmath>
 #include <iomanip>
-double roundToK(double value, int k) {
-    double factor = pow(10, k);
-    return round(value * factor) / factor;
-}
 int main() {
     double x;
-    int k;
-    std::cout << "x= ";
+    int k, precision;
+    std::cout << "X:";
     std::cin >> x;
-    if (x >= 1 || x <= -1) {
-        std::cout << "noob" << std::endl;
+    if (std::cin.fail() || x <= -1 || x >= 1) {
+        std::cout << "Nood (x ∈ [-1, +1])" << std::endl;
         return 1;
     }
     std::cout << "k: ";
     std::cin >> k;
-    if (k <= 1) {
-        std::cout << "nood" << std::endl;
+    if (std::cin.fail() || k <= 1) {
+        std::cout << "Nood (K > 1)" << std::endl;
         return 1;
     }
-    double result = log(1 - x);
-    result = roundToK(result, k);
-    std::cout <<"good: " << std::fixed << std::setprecision(k) << result << std::endl;
+    std::cout << "Decimal places: ";
+    std::cin >> precision;
+    if (std::cin.fail() || precision < 0) {
+        std::cout << "Nood (n > 0)" << std::endl;
+        return 1;
+    }
+    double epsilon = std::pow(10, -k);
+    double exact_value = std::log(1 - x);
+    double taylor_sum = 0;
+    double term = -x;
+    int n = 1;
+    while (std::abs(term) >= epsilon) {
+        taylor_sum += term;
+        n++;
+        term = -std::pow(x, n) / n;
+    }
+    std::cout << std::fixed << std::setprecision(precision);
+    std::cout << "Taylor: " << taylor_sum << std::endl;
+    std::cout << "Log: " << exact_value << std::endl;
+    double difference = std::abs(taylor_sum - exact_value);
+    std::cout << "The difference: " << difference << std::endl;
     return 0;
 }
